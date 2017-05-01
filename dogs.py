@@ -131,6 +131,5 @@ data = np.array(data).reshape(n_dogs, n_trial)
 
 d = Dogs(data)
 d.flip_data()
-
 # d.calculate_likelihood(-0.00001, -0.00001)
 print d.mcmc_sampler(-0.00001, -0.00001, 10000)
