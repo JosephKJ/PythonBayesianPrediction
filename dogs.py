@@ -10,6 +10,7 @@ class Dogs:
     num_failure = []
     accepted_alpha = []
     accepted_beta = []
+
     def __init__(self, data):
         self.data = data
         self.n_dogs, self.n_trials = data.shape
@@ -34,22 +35,8 @@ class Dogs:
                 self.num_failure[d, t] = t - self.num_success[d, t]
 
     def calculate_likelihood(self, alpha, beta):
-        # num_success = np.zeros((self.n_dogs, self.n_trials), dtype=np.int32) # No shock
-        # num_failure = np.zeros((self.n_dogs, self.n_trials), dtype=np.int32)
-        # for d in range(self.n_dogs):
-        #     num_success[d,0] = 0
-        #     num_failure[d,0] = 0
-        #     for t in range(1, self.n_trials):
-        #         for i in range(0, t):
-        #             num_success[d, t] = num_success[d, t] + self.data[d, i]
-        #         num_failure[d, t] = t - num_success[d, t]
-
         p_log = np.zeros((self.n_dogs, self.n_trials), dtype=np.float64)
         p = np.zeros((self.n_dogs, self.n_trials), dtype=np.float64)
-
-        # for d in range(self.n_dogs):
-        #     for t in range(self.n_trials):
-        #         p_log[d][t] = alpha * self.num_success[d][t] + beta * self.num_failure[d][t]
 
         p_log = alpha * self.num_success + beta * self.num_failure
 
@@ -61,12 +48,17 @@ class Dogs:
         #         prob[d][t] = stats.bernoulli(p[d][t]).pmf(self.y[d][t])
 
         # likelihood = prob.prod()
-        # likelihood = p.prod()
-        likelihood = np.exp(np.sum(p_log))
-        # print likelihood
+
+        likelihood = np.sum(np.exp(p_log))
         return likelihood
 
-    def mcmc_sampler(self, alpha_init, beta_init, iteration=5):
+    def generate_samples(self):
+        while True:
+            val = stats.norm.rvs(scale=0.27)
+            if val < -0.00001:
+                return val
+
+    def mcmc_sampler(self, alpha_init, beta_init, iteration=10000):
 
         alpha_prev = alpha_init
         beta_prev = beta_init
@@ -76,11 +68,12 @@ class Dogs:
         accepted_beta = [beta_init]
         burn_in = np.ceil(0.1 * iteration)
 
-
         for i in range(iteration):
             # loc specifies the mean, scale is the standard deviation
-            alpha_new = - stats.expon.rvs(scale=.0005)
-            beta_new = - stats.expon.rvs(scale=.0005)
+            alpha_new = self.generate_samples()
+            beta_new = self.generate_samples()
+
+            # - stats.expon.rvs(scale=.0005)
 
             # Posterior Calculation
             likelihood_prev = self.calculate_likelihood(alpha_prev, beta_prev)
@@ -100,6 +93,8 @@ class Dogs:
             proposal_prob_new = stats.norm.pdf(alpha_new) * stats.norm.pdf(beta_new)
 
             acceptance_ratio = min(1, (posterior_new * proposal_prob_prev) / (posterior_prev * proposal_prob_new))
+            # acceptance_ratio = min(1, (posterior_new/posterior_prev))
+
             accept = np.random.rand() < acceptance_ratio
 
             if accept and (i > burn_in):
@@ -115,6 +110,8 @@ class Dogs:
 
             else:
                 n_rejected += 1
+                # accepted_alpha.append(alpha_prev)
+                # accepted_beta.append(beta_prev)
 
         print "***"
         print n_accepted
@@ -124,6 +121,7 @@ class Dogs:
         # print "***"
         self.accepted_alpha = accepted_alpha
         self.accepted_beta = accepted_beta
+
         return (accepted_alpha, accepted_beta)
 
     def compute_posterior(self, alpha, beta, prior=None):
@@ -165,6 +163,12 @@ class Dogs:
         print num_failure
         print prediction
 
+    def sampled_variable_info(self):
+        print np.mean(self.accepted_alpha)
+        print np.mean(self.accepted_beta)
+        print np.var(self.accepted_alpha)
+        print np.var(self.accepted_beta)
+
 
 data = (0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
            0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -201,7 +205,11 @@ n_trial = 25
 data = np.array(data).reshape(n_dogs, n_trial)
 
 d = Dogs(data)
+# d.calculate_likelihood(-1, -1)
 # d.calculate_likelihood(-0.00001, -0.00001)
-d.mcmc_sampler(-.00001, -.00001, 1000)
 
-d.predict()
+d.mcmc_sampler(-1, -1, 10000)
+d.sampled_variable_info()
+
+
+# d.predict()
