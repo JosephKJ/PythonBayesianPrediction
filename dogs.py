@@ -86,8 +86,8 @@ class Dogs:
         beta_prev = beta_init
         n_accepted = 0
         n_rejected = 0
-        accepted_alpha = [alpha_init]
-        accepted_beta = [beta_init]
+        accepted_alpha = []
+        accepted_beta = []
         burn_in = np.ceil(0.1 * iteration)
 
         for i in range(iteration):
@@ -118,8 +118,8 @@ class Dogs:
 
             else:
                 n_rejected += 1
-                # accepted_alpha.append(alpha_prev)
-                # accepted_beta.append(beta_prev)
+                accepted_alpha.append(alpha_prev)
+                accepted_beta.append(beta_prev)
 
         print "***"
         print n_accepted
@@ -130,30 +130,27 @@ class Dogs:
 
     def predict(self):
 
-        num_success = 10
-        num_failure = 4
+        num_success = 0  # number of success (avoidances) before trial j
+        num_failure = 0  # number of previous failures (shocks)
         prediction = []
-        for _ in range(0,11):
+        for _ in range(0,25):
             pred = 0
             posterior = None
 
             for i in range (0, len(self.accepted_alpha)):
-                # log_p = self.accepted_alpha[i] * num_success + self.accepted_beta[i] * num_failure
-                # p = np.exp(log_p)
-                p = np.exp(self.accepted_alpha[i]) ** num_success + np.exp(self.accepted_beta[i]) ** num_failure
-                # posterior = self.compute_posterior(self.accepted_alpha[i], self.accepted_beta[i])
-                # posterior = stats.norm.pdf(self.accepted_alpha[i]) * stats.norm.pdf(self.accepted_beta[i])
-                # prod = p * posterior
-                # pred = pred + prod
+                log_p = self.accepted_alpha[i] * num_success + self.accepted_beta[i] * num_failure
+                p = np.exp(log_p)
+                # p = np.exp(self.accepted_alpha[i]) ** num_success + np.exp(self.accepted_beta[i]) ** num_failure
                 pred = pred + p
 
             pred = pred / len(self.accepted_alpha)
 
+            print pred
             if pred > 0.5:
                 num_failure += 1
             else:
                 num_success += 1
-            prediction.append(pred)
+            prediction.append(pred < 0.5)
 
         print num_success
         print num_failure
