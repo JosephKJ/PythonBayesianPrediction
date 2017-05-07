@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.stats as stats
 
+
 class Dogs:
     data = []
     y = []
@@ -39,17 +40,26 @@ class Dogs:
         p = np.zeros((self.n_dogs, self.n_trials), dtype=np.float64)
 
         p_log = alpha * self.num_success + beta * self.num_failure
+        p = np.exp(p_log)
 
-        # p = np.exp(p_log)
-        # prob = np.zeros((self.n_dogs, self.n_trials), dtype=np.float64)
+        prob = np.zeros((self.n_dogs, self.n_trials), dtype=np.float64)
         #
         # for d in range(self.n_dogs):
         #     for t in range(self.n_trials):
         #         prob[d][t] = stats.bernoulli(p[d][t]).pmf(self.y[d][t])
-
+        #
         # likelihood = prob.prod()
 
-        likelihood = np.sum(np.exp(p_log))
+        for d in range(self.n_dogs):
+            for t in range(self.n_trials):
+                if self.data[d][t] == 0: # dog didnot jump. So got shock
+                    prob[d][t] = p[d][t]
+                else:
+                    prob[d][t] = 1 - p[d][t]
+
+        likelihood = prob.prod()
+
+        # likelihood = np.sum(np.exp(p_log))
         return likelihood
 
     def generate_samples(self):
@@ -58,7 +68,19 @@ class Dogs:
             if val < -0.00001:
                 return val
 
-    def mcmc_sampler(self, alpha_init, beta_init, iteration=10000):
+    def compute_posterior(self, alpha, beta, prior=None):
+        likelihood = self.calculate_likelihood(alpha, beta)
+
+        if prior:
+            posterior = likelihood * prior
+        else:
+            alpha_prior = stats.norm.pdf(alpha)
+            beta_prior = stats.norm.pdf(beta)
+            posterior = likelihood * alpha_prior * beta_prior
+
+        return posterior
+
+    def mcmc_sampler(self, alpha_init=-1, beta_init=-1, iteration=10000):
 
         alpha_prev = alpha_init
         beta_prev = beta_init
@@ -73,20 +95,9 @@ class Dogs:
             alpha_new = self.generate_samples()
             beta_new = self.generate_samples()
 
-            # - stats.expon.rvs(scale=.0005)
-
             # Posterior Calculation
-            likelihood_prev = self.calculate_likelihood(alpha_prev, beta_prev)
-            likelihood_new = self.calculate_likelihood(alpha_new, beta_new)
-
-            alpha_prior_prev = stats.norm.pdf(alpha_prev)
-            beta_prior_prev = stats.norm.pdf(beta_prev)
-
-            alpha_prior_new = stats.norm.pdf(alpha_new)
-            beta_prior_new = stats.norm.pdf(beta_new)
-
-            posterior_prev = likelihood_prev * alpha_prior_prev * beta_prior_prev
-            posterior_new = likelihood_new * alpha_prior_new * beta_prior_new
+            posterior_prev = self.compute_posterior(alpha_prev, beta_prev)
+            posterior_new = self.compute_posterior(alpha_new, beta_new)
 
             # Proposal distribution pdf value
             proposal_prob_prev = stats.norm.pdf(alpha_prev) * stats.norm.pdf(beta_prev)
@@ -104,9 +115,6 @@ class Dogs:
                 n_accepted += 1
                 accepted_alpha.append(alpha_new)
                 accepted_beta.append(beta_new)
-                # print "---"
-                # print n_accepted
-                # print i
 
             else:
                 n_rejected += 1
@@ -116,26 +124,9 @@ class Dogs:
         print "***"
         print n_accepted
         print n_rejected
-        # print np.average(accepted_alpha)
-        # print np.average(accepted_beta)
-        # print "***"
+
         self.accepted_alpha = accepted_alpha
         self.accepted_beta = accepted_beta
-
-        return (accepted_alpha, accepted_beta)
-
-    def compute_posterior(self, alpha, beta, prior=None):
-        likelihood = self.calculate_likelihood(alpha, beta)
-
-        if prior:
-            posterior = likelihood * prior
-        else:
-            alpha_prior = stats.norm.pdf(alpha)
-            beta_prior = stats.norm.pdf(beta)
-            posterior = likelihood * alpha_prior * beta_prior
-
-        # print posterior
-        return posterior
 
     def predict(self):
 
@@ -147,13 +138,14 @@ class Dogs:
             pred = 0
             posterior = None
             for i in range (0, len(self.accepted_alpha)):
-                log_p = self.accepted_alpha[i] * num_success + self.accepted_beta[i] * num_failure
-                p = np.exp(log_p)
+                # log_p = self.accepted_alpha[i] * num_success + self.accepted_beta[i] * num_failure
+                # p = np.exp(log_p)
+                p = np.exp(self.accepted_alpha[i]) ** num_success + np.exp(self.accepted_beta[i]) ** num_failure
                 posterior = self.compute_posterior(self.accepted_alpha[i], self.accepted_beta[i])
                 prod = p * posterior
                 pred = pred + prod
 
-            if pred > 0.5:
+            if pred < 0.5:
                 num_failure += 1
             else:
                 num_success += 1
@@ -205,11 +197,7 @@ n_trial = 25
 data = np.array(data).reshape(n_dogs, n_trial)
 
 d = Dogs(data)
-# d.calculate_likelihood(-1, -1)
-# d.calculate_likelihood(-0.00001, -0.00001)
-
 d.mcmc_sampler(-1, -1, 10000)
 d.sampled_variable_info()
 
-
-# d.predict()
+d.predict()
