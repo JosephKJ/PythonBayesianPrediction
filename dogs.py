@@ -141,9 +141,12 @@ class Dogs:
                 # log_p = self.accepted_alpha[i] * num_success + self.accepted_beta[i] * num_failure
                 # p = np.exp(log_p)
                 p = np.exp(self.accepted_alpha[i]) ** num_success + np.exp(self.accepted_beta[i]) ** num_failure
-                posterior = self.compute_posterior(self.accepted_alpha[i], self.accepted_beta[i])
-                prod = p * posterior
-                pred = pred + prod
+                # posterior = self.compute_posterior(self.accepted_alpha[i], self.accepted_beta[i])
+                # posterior = stats.norm.pdf(self.accepted_alpha[i]) * stats.norm.pdf(self.accepted_beta[i])
+                # prod = p * posterior
+                # pred = pred + prod
+
+                pred = pred + p
 
             if pred < 0.5:
                 num_failure += 1
