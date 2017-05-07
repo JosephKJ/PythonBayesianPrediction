@@ -64,7 +64,7 @@ class Dogs:
 
     def generate_samples(self):
         while True:
-            val = stats.norm.rvs(scale=0.27)
+            val = stats.norm.rvs(scale=.36)
             if val < -0.00001:
                 return val
 
@@ -133,10 +133,10 @@ class Dogs:
         num_success = 10
         num_failure = 4
         prediction = []
-
         for _ in range(0,11):
             pred = 0
             posterior = None
+
             for i in range (0, len(self.accepted_alpha)):
                 # log_p = self.accepted_alpha[i] * num_success + self.accepted_beta[i] * num_failure
                 # p = np.exp(log_p)
@@ -145,10 +145,11 @@ class Dogs:
                 # posterior = stats.norm.pdf(self.accepted_alpha[i]) * stats.norm.pdf(self.accepted_beta[i])
                 # prod = p * posterior
                 # pred = pred + prod
-
                 pred = pred + p
 
-            if pred < 0.5:
+            pred = pred / len(self.accepted_alpha)
+
+            if pred > 0.5:
                 num_failure += 1
             else:
                 num_success += 1
