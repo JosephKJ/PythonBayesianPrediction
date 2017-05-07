@@ -43,7 +43,7 @@ class Dogs:
         p = np.exp(p_log)
 
         prob = np.zeros((self.n_dogs, self.n_trials), dtype=np.float64)
-        #
+
         # for d in range(self.n_dogs):
         #     for t in range(self.n_trials):
         #         prob[d][t] = stats.bernoulli(p[d][t]).pmf(self.y[d][t])
@@ -59,7 +59,6 @@ class Dogs:
 
         likelihood = prob.prod()
 
-        # likelihood = np.sum(np.exp(p_log))
         return likelihood
 
     def generate_samples(self):
@@ -104,7 +103,6 @@ class Dogs:
             proposal_prob_new = stats.norm.pdf(alpha_new) * stats.norm.pdf(beta_new)
 
             acceptance_ratio = min(1, (posterior_new * proposal_prob_prev) / (posterior_prev * proposal_prob_new))
-            # acceptance_ratio = min(1, (posterior_new/posterior_prev))
 
             accept = np.random.rand() < acceptance_ratio
 
@@ -121,9 +119,8 @@ class Dogs:
                 accepted_alpha.append(alpha_prev)
                 accepted_beta.append(beta_prev)
 
-        print "***"
-        print n_accepted
-        print n_rejected
+        print "Number of accepted samples: %d " % n_accepted
+        print "Number of rejected samples: %d " % n_rejected
 
         self.accepted_alpha = accepted_alpha
         self.accepted_beta = accepted_beta
@@ -131,36 +128,38 @@ class Dogs:
     def predict(self):
 
         num_success = 0  # number of success (avoidances) before trial j
-        num_failure = 0  # number of previous failures (shocks)
+        num_failure = 1  # number of previous failures (shocks)
         prediction = []
+        prob_values = []
         for _ in range(0,25):
             pred = 0
-            posterior = None
-
             for i in range (0, len(self.accepted_alpha)):
                 log_p = self.accepted_alpha[i] * num_success + self.accepted_beta[i] * num_failure
                 p = np.exp(log_p)
-                # p = np.exp(self.accepted_alpha[i]) ** num_success + np.exp(self.accepted_beta[i]) ** num_failure
                 pred = pred + p
 
             pred = pred / len(self.accepted_alpha)
 
-            print pred
             if pred > 0.5:
                 num_failure += 1
             else:
                 num_success += 1
+
             prediction.append(pred < 0.5)
+            prob_values.append(pred)
 
-        print num_success
-        print num_failure
+        print "Prediction"
+        print "----------"
+        print "Number of instances where the dog jumps off: %d" % num_success
+        print "Number of instances where the dog gets shock: %d" % num_failure
+        print "Prediction: "
         print prediction
+        print "Probability values:"
+        print prob_values
 
-    def sampled_variable_info(self):
-        print np.mean(self.accepted_alpha)
-        print np.mean(self.accepted_beta)
-        print np.var(self.accepted_alpha)
-        print np.var(self.accepted_beta)
+    def sampled_variable_stats(self):
+        print "Mean of alpha values: %f" % (np.mean(self.accepted_alpha))
+        print "Mean of beta values: %f" % (np.mean(self.accepted_beta))
 
 
 data = (0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -199,6 +198,5 @@ data = np.array(data).reshape(n_dogs, n_trial)
 
 d = Dogs(data)
 d.mcmc_sampler(-1, -1, 10000)
-d.sampled_variable_info()
-
+d.sampled_variable_stats()
 d.predict()
