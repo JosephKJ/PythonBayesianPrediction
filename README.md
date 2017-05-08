@@ -14,6 +14,4 @@ Consider the event that the dog jumps at trial i and trial j, where j > i. The p
 
 The probability of a shock (failure) at trial j can be modeled using this formula:
 
-<div style="text-align: center;"><a href="https://www.codecogs.com/eqnedit.php?latex=p_{j}&space;=&space;A^{x_{j}}&space;*&space;B^{j&space;-&space;x_{j}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?p_{j}&space;=&space;A^{x_{j}}&space;*&space;B^{j&space;-&space;x_{j}}" title="p_{j} = A^{x_{j}} * B^{j - x_{j}}" /></a><div>
-
-<h1 style="text-align:center;">Centered Heading</h1>
+<a href="https://www.codecogs.com/eqnedit.php?latex=p_{j}&space;=&space;A^{x_{j}}&space;B^{j&space;-&space;x_{j}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?p_{j}&space;=&space;A^{x_{j}}&space;B^{j&space;-&space;x_{j}}" title="p_{j} = A^{x_{j}} B^{j - x_{j}}" /></a>
