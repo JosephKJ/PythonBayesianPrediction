@@ -247,7 +247,7 @@ Process finished with exit code 0
 
 #### Inference
 
-As we expect, the probability with which the dig gets a shock will decrease, as he had some experiance. The probability has come down to 0.86953561341847818 for the first try.
+As we expect, the probability with which the dig gets a shock will decrease, as he had some experiance. The probability has come down to 0.9244703784476298 for the first try.
 
 ---
 
@@ -285,4 +285,4 @@ Process finished with exit code 0
 
 #### Inference
 
-As we expect, the probability with which the dig gets a shock will decrease further, as he is too proactive. The probability has come down to 0.74568564602059784 for the first try.
+As we expect, the probability with which the dig gets a shock will decrease further, as he is too proactive. The probability has come down to 0.78570318123219829 for the first try.
