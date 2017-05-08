@@ -180,7 +180,7 @@ As we have trained a model, we can put to test.
 A case in which a dog is put to the cage the very fist time. In this situation, the dog has never had any experiance on whats going to happen. We can simulate this by setting the values of num_success and num_failure to zero. 
 
 #### Output:
----
+
 ```
 /Users/josephkj/anaconda2/bin/python -W ignore /Users/josephkj/PycharmProjects/BayesianProject/dogs.py
 
@@ -207,8 +207,6 @@ Process finished with exit code 0
 
 ```
 
-
 #### Inference
----
 
 The most interesting part of this result is that the probability with which the dog gets the shock in the first trial is predicted to be 1.0 This completely justifies the training data
