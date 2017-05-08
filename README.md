@@ -11,6 +11,8 @@ The dogs data is based on Solomon-Wynne experiment with dogs, in which a dog was
 ### Modelling Likelihood
 
 Consider the event that the dog jumps at trial i and trial j, where j > i. The probability that event j happens is not independent with the event i. In that case, we cannot decompose the likelihood into the product of independent events. To overcome this situation, we consider independent bernouli events with different probailities, where the probability is modeled with respect to the past events. 
-The probability of a shock (failure) at trial j can be modeled using this formula. 
+
+The probability of a shock (failure) at trial j can be modeled using this formula:
+
 <a href="https://www.codecogs.com/eqnedit.php?latex=p_{j}&space;=&space;A^{x_{j}}&space;*&space;B^{j&space;-&space;x_{j}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?p_{j}&space;=&space;A^{x_{j}}&space;*&space;B^{j&space;-&space;x_{j}}" title="p_{j} = A^{x_{j}} * B^{j - x_{j}}" /></a>
 
