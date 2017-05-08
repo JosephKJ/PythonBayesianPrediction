@@ -186,19 +186,19 @@ Here we test the case in which a dog is put to the cage the very fist time. In t
 
 Statistics of alpha and beta
 ----------------------------
-Number of accepted samples: 117 
-Number of rejected samples: 9883 
-Mean of alpha values: -0.318505
-Mean of beta values: -0.172197
+Number of accepted samples: 96 
+Number of rejected samples: 8903 
+Mean of alpha values: -0.243095
+Mean of beta values: -0.078131
 
 Prediction
 ----------
-Number of instances where the dog jumps off: 17
-Number of instances where the dog gets shock: 8
+Number of instances where the dog jumps off: 16
+Number of instances where the dog gets shock: 9
 Prediction: 
-[False, False, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+[False, False, False, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
 Probability values:
-[1.0, 0.86755959855601417, 0.78062268346274488, 0.71342633179041071, 0.6562475532239872, 0.60528633691800149, 0.55894105308408648, 0.51643613941242172, 0.47731553854955466, 0.37391973759195563, 0.29315488484744912, 0.2300164830560234, 0.18061920716148455, 0.14194293943388461, 0.11163783448631691, 0.087874023466147352, 0.069225440086758239, 0.054579877346793378, 0.043069272135382974, 0.034015618351672383, 0.026888970656175393, 0.021274811234490786, 0.016848673499389413, 0.013356394775123596, 0.010598738441596915]
+[1.0, 0.9249193114355031, 0.85561487565988714, 0.79162940233577406, 0.73254325707195722, 0.6779711586903473, 0.62755919863743981, 0.58098214563390715, 0.53794100376685738, 0.49816079651448264, 0.39017421752534709, 0.30582166021650881, 0.23988169401052201, 0.1882972688831783, 0.14791365054824374, 0.11627587511707217, 0.091472085327323802, 0.072012262194770277, 0.056734283295310016, 0.044731094315053732, 0.035294205682382181, 0.027869821593921831, 0.022024751455598568, 0.017419902491206438, 0.01378965204891722]
 
 Legend:
 'True' indicates avoidance of shock and 'False' indicates event of getting shock.
