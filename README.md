@@ -68,3 +68,16 @@ We assume the prior to be a standard normal.
 
 ## Proposal Distribution
 
+We take a normal distribution with a specific varaince as the proposal distribution. 
+
+## Doing MCMC
+
+As the likelihood is not conjugate to the prior, we will not be able to compute the posterior is closed form. Hence we sample some points from a proposal distribution and accept them based on an acceptance criteria. We believe that the accepted points are coming from the actual posterior which we are trying to model. 
+
+
+Acceptance Criteria based on Metropolis Hastings:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=A(z^{*}&space;|&space;z)&space;=&space;\frac{\widetilde{p}(z^{*})\,&space;q(z)}{\widetilde{p}(z)\,&space;q(z^{*})}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?A(z^{*}&space;|&space;z)&space;=&space;\frac{\widetilde{p}(z^{*})\,&space;q(z)}{\widetilde{p}(z)\,&space;q(z^{*})}" title="A(z^{*} | z) = \frac{\widetilde{p}(z^{*})\, q(z)}{\widetilde{p}(z)\, q(z^{*})}" /></a>
+
+
+
