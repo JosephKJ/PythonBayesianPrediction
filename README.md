@@ -123,13 +123,6 @@ This is how it looks in code:
                 accepted_alpha.append(alpha_prev)
                 accepted_beta.append(beta_prev)
 
-        print "\nStatistics of alpha and beta"
-        print "----------------------------"
-        print "Number of accepted samples: %d " % n_accepted
-        print "Number of rejected samples: %d " % n_rejected
-        print "Mean of alpha values: %f" % (np.mean(accepted_alpha))
-        print "Mean of beta values: %f" % (np.mean(accepted_beta))
-
         self.accepted_alpha = accepted_alpha
         self.accepted_beta = accepted_beta
         
