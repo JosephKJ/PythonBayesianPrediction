@@ -177,7 +177,7 @@ As we have trained a model, we can put to test.
 
 ### Test 1: 
 
-A case in which a dog is put to the cage the very fist time. In this situation, the dog has never had any experiance on whats going to happen. We can simulate this by setting the values of num_success and num_failure to zero. 
+Here we test the case in which a dog is put to the cage the very fist time. In this situation, the dog has never had any experiance on whats going to happen. We can simulate this by setting the values of num_success and num_failure to zero. 
 
 #### Output:
 
