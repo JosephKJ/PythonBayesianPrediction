@@ -77,7 +77,7 @@ As the likelihood is not conjugate to the prior, we will not be able to compute 
 
 Acceptance Criteria based on Metropolis Hastings:
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=A(z^{*}&space;|&space;z)&space;=&space;\frac{\widetilde{p}(z^{*})\,&space;q(z)}{\widetilde{p}(z)\,&space;q(z^{*})}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?A(z^{*}&space;|&space;z)&space;=&space;\frac{\widetilde{p}(z^{*})\,&space;q(z)}{\widetilde{p}(z)\,&space;q(z^{*})}" title="A(z^{*} | z) = \frac{\widetilde{p}(z^{*})\, q(z)}{\widetilde{p}(z)\, q(z^{*})}" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=A(z^{*}&space;|&space;z)&space;=&space;min\begin{pmatrix}1,&space;\frac{\widetilde{p}(z^{*})\,&space;q(z)}{\widetilde{p}(z)\,&space;q(z^{*})}\end{pmatrix}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?A(z^{*}&space;|&space;z)&space;=&space;min\begin{pmatrix}1,&space;\frac{\widetilde{p}(z^{*})\,&space;q(z)}{\widetilde{p}(z)\,&space;q(z^{*})}\end{pmatrix}" title="A(z^{*} | z) = min\begin{pmatrix}1, \frac{\widetilde{p}(z^{*})\, q(z)}{\widetilde{p}(z)\, q(z^{*})}\end{pmatrix}" /></a>
 
 
 This is how it looks in code:
