@@ -80,4 +80,57 @@ Acceptance Criteria based on Metropolis Hastings:
 <a href="https://www.codecogs.com/eqnedit.php?latex=A(z^{*}&space;|&space;z)&space;=&space;\frac{\widetilde{p}(z^{*})\,&space;q(z)}{\widetilde{p}(z)\,&space;q(z^{*})}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?A(z^{*}&space;|&space;z)&space;=&space;\frac{\widetilde{p}(z^{*})\,&space;q(z)}{\widetilde{p}(z)\,&space;q(z^{*})}" title="A(z^{*} | z) = \frac{\widetilde{p}(z^{*})\, q(z)}{\widetilde{p}(z)\, q(z^{*})}" /></a>
 
 
+This is how it looks in code:
 
+```Python
+
+    def mcmc_sampler(self, alpha_init=-1, beta_init=-1, iteration=10000):
+
+        alpha_prev = alpha_init
+        beta_prev = beta_init
+        n_accepted = 0
+        n_rejected = 0
+        accepted_alpha = []
+        accepted_beta = []
+        burn_in = np.ceil(0.1 * iteration)
+
+        for i in range(iteration):
+            alpha_new = self.generate_samples()
+            beta_new = self.generate_samples()
+
+            # Posterior Calculation
+            posterior_prev = self.compute_posterior(alpha_prev, beta_prev)
+            posterior_new = self.compute_posterior(alpha_new, beta_new)
+
+            # Proposal distribution pdf value
+            proposal_prob_prev = stats.norm.pdf(alpha_prev) * stats.norm.pdf(beta_prev)
+            proposal_prob_new = stats.norm.pdf(alpha_new) * stats.norm.pdf(beta_new)
+
+            acceptance_ratio = min(1, (posterior_new * proposal_prob_prev) / (posterior_prev * proposal_prob_new))
+
+            accept = np.random.rand() < acceptance_ratio
+
+            if accept and (i > burn_in):
+                alpha_prev = alpha_new
+                beta_prev = beta_new
+
+                n_accepted += 1
+                accepted_alpha.append(alpha_new)
+                accepted_beta.append(beta_new)
+
+            else:
+                n_rejected += 1
+                accepted_alpha.append(alpha_prev)
+                accepted_beta.append(beta_prev)
+
+        print "\nStatistics of alpha and beta"
+        print "----------------------------"
+        print "Number of accepted samples: %d " % n_accepted
+        print "Number of rejected samples: %d " % n_rejected
+        print "Mean of alpha values: %f" % (np.mean(accepted_alpha))
+        print "Mean of beta values: %f" % (np.mean(accepted_beta))
+
+        self.accepted_alpha = accepted_alpha
+        self.accepted_beta = accepted_beta
+        
+```
