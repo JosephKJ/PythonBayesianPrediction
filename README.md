@@ -17,6 +17,9 @@ The probability of a shock (failure) at trial j can be modeled using this formul
 <a href="https://www.codecogs.com/eqnedit.php?latex=p_{j}&space;=&space;A^{x_{j}}&space;B^{j&space;-&space;x_{j}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?p_{j}&space;=&space;A^{x_{j}}&space;B^{j&space;-&space;x_{j}}" title="p_{j} = A^{x_{j}} B^{j - x_{j}}" /></a>
 
 where 
+
 A and B are two varaibles which we will estimate, 
+
 x<sup>j</sup> is number of success (avoidances) before trial j and
+
 j - x<sup>j</sup>   = number of previous failures (shocks).
