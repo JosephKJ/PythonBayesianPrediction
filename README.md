@@ -170,3 +170,45 @@ This is how it looks in code:
             prob_values.append(pred)
             
 ```
+
+## Results
+
+As we have trained a model, we can put to test. 
+
+### Test 1: 
+
+A case in which a dog is put to the cage the very fist time. In this situation, the dog has never had any experiance on whats going to happen. We can simulate this by setting the values of num_success and num_failure to zero. 
+
+Output:
+---
+```
+/Users/josephkj/anaconda2/bin/python -W ignore /Users/josephkj/PycharmProjects/BayesianProject/dogs.py
+
+Statistics of alpha and beta
+----------------------------
+Number of accepted samples: 117 
+Number of rejected samples: 9883 
+Mean of alpha values: -0.318505
+Mean of beta values: -0.172197
+
+Prediction
+----------
+Number of instances where the dog jumps off: 17
+Number of instances where the dog gets shock: 8
+Prediction: 
+[False, False, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+Probability values:
+[1.0, 0.86755959855601417, 0.78062268346274488, 0.71342633179041071, 0.6562475532239872, 0.60528633691800149, 0.55894105308408648, 0.51643613941242172, 0.47731553854955466, 0.37391973759195563, 0.29315488484744912, 0.2300164830560234, 0.18061920716148455, 0.14194293943388461, 0.11163783448631691, 0.087874023466147352, 0.069225440086758239, 0.054579877346793378, 0.043069272135382974, 0.034015618351672383, 0.026888970656175393, 0.021274811234490786, 0.016848673499389413, 0.013356394775123596, 0.010598738441596915]
+
+Legend:
+'True' indicates avoidance of shock and 'False' indicates event of getting shock.
+
+Process finished with exit code 0
+
+```
+
+
+Inference
+---
+
+The most interesting part of this result is that the probability with which the dog gets the shock in the first trial is predicted to be 1.0 This completely justifies the training data
