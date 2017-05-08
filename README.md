@@ -20,6 +20,6 @@ where
 
 A and B are two varaibles which we will estimate, 
 
-x<sup>j</sup> is number of success (avoidances) before trial j and
+x<sub>j</sub> is number of success (avoidances) before trial j and
 
-j - x<sup>j</sup>   = number of previous failures (shocks).
+j - x<sub>j</sub>   = number of previous failures (shocks).
