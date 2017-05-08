@@ -52,7 +52,7 @@ class Dogs:
 
         for d in range(self.n_dogs):
             for t in range(self.n_trials):
-                if self.data[d][t] == 0: # dog didnot jump. So got shock
+                if self.data[d][t] == 0:  # dog did-not jump, hence it got electrocuted
                     prob[d][t] = p[d][t]
                 else:
                     prob[d][t] = 1 - p[d][t]
@@ -60,12 +60,6 @@ class Dogs:
         likelihood = prob.prod()
 
         return likelihood
-
-    def generate_samples(self):
-        while True:
-            val = stats.norm.rvs(scale=.36)
-            if val < -0.00001:
-                return val
 
     def compute_posterior(self, alpha, beta, prior=None):
         likelihood = self.calculate_likelihood(alpha, beta)
@@ -79,6 +73,12 @@ class Dogs:
 
         return posterior
 
+    def generate_samples(self):
+        while True:
+            val = stats.norm.rvs(scale=.36)
+            if val < -0.00001:
+                return val
+
     def mcmc_sampler(self, alpha_init=-1, beta_init=-1, iteration=10000):
 
         alpha_prev = alpha_init
@@ -90,7 +90,6 @@ class Dogs:
         burn_in = np.ceil(0.1 * iteration)
 
         for i in range(iteration):
-            # loc specifies the mean, scale is the standard deviation
             alpha_new = self.generate_samples()
             beta_new = self.generate_samples()
 
@@ -119,16 +118,20 @@ class Dogs:
                 accepted_alpha.append(alpha_prev)
                 accepted_beta.append(beta_prev)
 
+        print "\nStatistics of alpha and beta"
+        print "----------------------------"
         print "Number of accepted samples: %d " % n_accepted
         print "Number of rejected samples: %d " % n_rejected
+        print "Mean of alpha values: %f" % (np.mean(accepted_alpha))
+        print "Mean of beta values: %f" % (np.mean(accepted_beta))
 
         self.accepted_alpha = accepted_alpha
         self.accepted_beta = accepted_beta
 
     def predict(self):
 
-        num_success = 0  # number of success (avoidances) before trial j
-        num_failure = 1  # number of previous failures (shocks)
+        num_success = 0  # number of success (avoidences) before trial j
+        num_failure = 0  # number of previous failures (shocks)
         prediction = []
         prob_values = []
         for _ in range(0,25):
@@ -148,7 +151,7 @@ class Dogs:
             prediction.append(pred < 0.5)
             prob_values.append(pred)
 
-        print "Prediction"
+        print "\nPrediction"
         print "----------"
         print "Number of instances where the dog jumps off: %d" % num_success
         print "Number of instances where the dog gets shock: %d" % num_failure
@@ -156,10 +159,7 @@ class Dogs:
         print prediction
         print "Probability values:"
         print prob_values
-
-    def sampled_variable_stats(self):
-        print "Mean of alpha values: %f" % (np.mean(self.accepted_alpha))
-        print "Mean of beta values: %f" % (np.mean(self.accepted_beta))
+        print "\nLegend:\n'True' indicates avoidance of shock and 'False' indicates event of getting shock."
 
 
 data = (0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -198,5 +198,4 @@ data = np.array(data).reshape(n_dogs, n_trial)
 
 d = Dogs(data)
 d.mcmc_sampler(-1, -1, 10000)
-d.sampled_variable_stats()
 d.predict()
