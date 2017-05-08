@@ -20,3 +20,11 @@ where
 * A and B are two varaibles which we will estimate, 
 * x<sub>j</sub> is number of success (avoidances) before trial j and
 * j - x<sub>j</sub>   = number of previous failures (shocks).
+
+The complete likelihood can be calculated as:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\prod_{i&space;=&space;1}^{30}\prod_{t&space;=&space;1}^{24}&space;(p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\prod_{i&space;=&space;1}^{30}\prod_{t&space;=&space;1}^{24}&space;(p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" title="\prod_{i = 1}^{30}\prod_{t = 1}^{24} (p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" /></a>
+
+where 
+* p<sub>j</sub> is calculated in the first formula
+* y<sub>j</sub> is output of the trial
