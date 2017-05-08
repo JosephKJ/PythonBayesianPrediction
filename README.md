@@ -141,3 +141,32 @@ Bayesian Prediction Formula is:
 Using Monte Carlo method, we can approximate this integral by averaging the function over the variables, drawn from the probability distribution. 
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=p({\tilde&space;{x}}\mid&space;\mathbf&space;{D}&space;,M&space;)=\frac{1}{L}\sum_{i&space;=&space;1}^{L}&space;p({\tilde&space;{x}}\mid&space;\alpha_{i},&space;\beta_{i}&space;)\,&space;where&space;\,&space;\alpha_{i},&space;\beta_{i}&space;\,&space;are&space;\,drawn&space;\,from&space;\,&space;p(\theta&space;\mid&space;\mathbf&space;{D}&space;,M&space;)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?p({\tilde&space;{x}}\mid&space;\mathbf&space;{D}&space;,M&space;)=\frac{1}{L}\sum_{i&space;=&space;1}^{L}&space;p({\tilde&space;{x}}\mid&space;\alpha_{i},&space;\beta_{i}&space;)\,&space;where&space;\,&space;\alpha_{i},&space;\beta_{i}&space;\,&space;are&space;\,drawn&space;\,from&space;\,&space;p(\theta&space;\mid&space;\mathbf&space;{D}&space;,M&space;)" title="p({\tilde {x}}\mid \mathbf {D} ,M )=\frac{1}{L}\sum_{i = 1}^{L} p({\tilde {x}}\mid \alpha_{i}, \beta_{i} )\, where \, \alpha_{i}, \beta_{i} \, are \,drawn \,from \, p(\theta \mid \mathbf {D} ,M )" /></a>
+
+This is how it looks in code:
+
+```python
+
+    def predict(self):
+
+        num_success = 0  # number of success (avoidences) before trial j
+        num_failure = 0  # number of previous failures (shocks)
+        prediction = []
+        prob_values = []
+        for _ in range(0,25):
+            pred = 0
+            for i in range (0, len(self.accepted_alpha)):
+                log_p = self.accepted_alpha[i] * num_success + self.accepted_beta[i] * num_failure
+                p = np.exp(log_p)
+                pred = pred + p
+
+            pred = pred / len(self.accepted_alpha)
+
+            if pred > 0.5:
+                num_failure += 1
+            else:
+                num_success += 1
+
+            prediction.append(pred < 0.5)
+            prob_values.append(pred)
+            
+```
