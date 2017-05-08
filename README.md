@@ -59,3 +59,12 @@ This is how it looks in code:
 
         return likelihood
 ```
+
+## Modelling Prior
+
+As we have two variables alpha and beta, we need to put a prior over each of them. 
+
+We assume the prior to be a standard normal. 
+
+## Proposal Distribution
+
