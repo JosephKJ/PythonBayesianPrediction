@@ -20,12 +20,14 @@ where
 * A and B are two varaibles which we will estimate, 
 * x<sub>j</sub> is number of success (avoidances) before trial j and
 * j - x<sub>j</sub>   = number of previous failures (shocks).
-
+---
 p<sub>j</sub> can be expressed as the log linear form as:
+
 <a href="https://www.codecogs.com/eqnedit.php?latex=log&space;\,&space;p_{j}&space;=&space;\alpha&space;(x_{j})&space;&plus;&space;\beta&space;(j&space;-&space;x_{j})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?log&space;\,&space;p_{j}&space;=&space;\alpha&space;(x_{j})&space;&plus;&space;\beta&space;(j&space;-&space;x_{j})" title="log \, p_{j} = \alpha (x_{j}) + \beta (j - x_{j})" /></a>
+
 where 
 * alpha and beta are two varaibles which we will estimate, 
-
+---
 The complete likelihood can be calculated as:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\prod_{i&space;=&space;1}^{30}\prod_{t&space;=&space;1}^{24}&space;(p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\prod_{i&space;=&space;1}^{30}\prod_{t&space;=&space;1}^{24}&space;(p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" title="\prod_{i = 1}^{30}\prod_{t = 1}^{24} (p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" /></a>
