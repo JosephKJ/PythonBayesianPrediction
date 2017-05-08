@@ -104,19 +104,19 @@ class Dogs:
             acceptance_ratio = min(1, (posterior_new * proposal_prob_prev) / (posterior_prev * proposal_prob_new))
 
             accept = np.random.rand() < acceptance_ratio
+            if i > burn_in:
+                if accept:
+                    alpha_prev = alpha_new
+                    beta_prev = beta_new
 
-            if accept and (i > burn_in):
-                alpha_prev = alpha_new
-                beta_prev = beta_new
+                    n_accepted += 1
+                    accepted_alpha.append(alpha_new)
+                    accepted_beta.append(beta_new)
 
-                n_accepted += 1
-                accepted_alpha.append(alpha_new)
-                accepted_beta.append(beta_new)
-
-            else:
-                n_rejected += 1
-                accepted_alpha.append(alpha_prev)
-                accepted_beta.append(beta_prev)
+                else:
+                    n_rejected += 1
+                    accepted_alpha.append(alpha_prev)
+                    accepted_beta.append(beta_prev)
 
         print "\nStatistics of alpha and beta"
         print "----------------------------"
