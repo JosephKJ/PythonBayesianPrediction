@@ -30,7 +30,7 @@ where
 ---
 The complete likelihood can be calculated as:
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=\prod_{i&space;=&space;1}^{30}\prod_{t&space;=&space;1}^{24}&space;(p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\prod_{i&space;=&space;1}^{30}\prod_{t&space;=&space;1}^{24}&space;(p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" title="\prod_{i = 1}^{30}\prod_{t = 1}^{24} (p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=L&space;=&space;\prod_{i&space;=&space;1}^{30}\prod_{t&space;=&space;1}^{25}&space;(p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?L&space;=&space;\prod_{i&space;=&space;1}^{30}\prod_{t&space;=&space;1}^{25}&space;(p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" title="L = \prod_{i = 1}^{30}\prod_{t = 1}^{25} (p_{j}^{y_{j}})(1-p_{j}^{1-y_{j}})" /></a>
 
 where 
 * p<sub>j</sub> is calculated in the second formula
