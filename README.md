@@ -134,6 +134,8 @@ So now, we have sampled points from a proposal distribution, which tightly model
 
 Hence, we will use these points to do prediction. 
 
-Bayesian Prediction Formula looks like this:
+Bayesian Prediction Formula is:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=p({\tilde&space;{x}}\mid&space;\mathbf&space;{D}&space;,M&space;)=\int&space;_{\theta&space;}p({\tilde&space;{x}}\mid&space;\theta&space;)p(\theta&space;\mid&space;\mathbf&space;{D}&space;,M&space;)\operatorname&space;{d}&space;\!\theta" target="_blank"><img src="https://latex.codecogs.com/gif.latex?p({\tilde&space;{x}}\mid&space;\mathbf&space;{D}&space;,M&space;)=\int&space;_{\theta&space;}p({\tilde&space;{x}}\mid&space;\theta&space;)p(\theta&space;\mid&space;\mathbf&space;{D}&space;,M&space;)\operatorname&space;{d}&space;\!\theta" title="p({\tilde {x}}\mid \mathbf {D} ,M )=\int _{\theta }p({\tilde {x}}\mid \theta )p(\theta \mid \mathbf {D} ,M )\operatorname {d} \!\theta" /></a>
+
+Using Monte Carlo method, we can approximate this integral by averaging the function over the variables, drawn from the probability distribution. 
