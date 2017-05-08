@@ -210,3 +210,79 @@ Process finished with exit code 0
 #### Inference
 
 The most interesting part of this result is that the probability with which the dog gets the shock in the first trial is predicted to be 1.0 This completely justifies the training data
+
+---
+
+### Test 2: 
+
+Here we test the case in which the dog already had a shock. We can simulate this by setting the value of num_success to 0 and num_failure to 1. 
+
+#### Output:
+
+```
+/Users/josephkj/anaconda2/bin/python -W ignore /Users/josephkj/PycharmProjects/BayesianProject/dogs.py
+
+Statistics of alpha and beta
+----------------------------
+Number of accepted samples: 87 
+Number of rejected samples: 9913 
+Mean of alpha values: -0.320770
+Mean of beta values: -0.169978
+
+Prediction
+----------
+Number of instances where the dog jumps off: 18
+Number of instances where the dog gets shock: 8
+Prediction: 
+[False, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+Probability values:
+[0.86953561341847818, 0.78416712955414736, 0.71821746090898098, 0.66202270817755893, 0.61182700912032961, 0.56606367735568142, 0.52398584378391921, 0.48516153840991272, 0.37945022316779098, 0.29687966202362931, 0.23235869016197402, 0.18192334026074511, 0.14248475943944486, 0.11163465277671025, 0.087494503559732817, 0.068598466725721147, 0.053802304523344183, 0.042212519151578233, 0.033131173047105465, 0.026012905423824419, 0.020431436567500332, 0.016053456381653636, 0.012618262358184381, 0.0099218757282912608, 0.0078046468442014077]
+
+Legend:
+'True' indicates avoidance of shock and 'False' indicates event of getting shock.
+
+Process finished with exit code 0
+
+```
+
+#### Inference
+
+As we expect, the probability with which the dig gets a shock will decrease, as he had some experiance. The probability has come down to 0.86953561341847818 for the first try.
+
+---
+
+### Test 3: 
+
+Here we test the case in which the dog already started jumping even before getting the shock. This case it like the dog is too smart that it just senses that something bad is going to happen and jumps out proactively. We can simulate this by setting the value of num_success to 1 and num_failure to 0. 
+
+#### Output:
+
+```
+/Users/josephkj/anaconda2/bin/python -W ignore /Users/josephkj/PycharmProjects/BayesianProject/dogs.py
+
+Statistics of alpha and beta
+----------------------------
+Number of accepted samples: 114 
+Number of rejected samples: 9886 
+Mean of alpha values: -0.315095
+Mean of beta values: -0.174344
+
+Prediction
+----------
+Number of instances where the dog jumps off: 21
+Number of instances where the dog gets shock: 5
+Prediction: 
+[False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+Probability values:
+[0.74568564602059784, 0.66623189521141635, 0.60604220333263648, 0.55543712855856353, 0.5106494703692056, 0.47010464931432633, 0.37013412373078325, 0.29162674378683723, 0.22991114745722357, 0.18135811709297292, 0.14313543717071431, 0.11302742993960946, 0.089298168516623339, 0.070586217907712911, 0.055823006886168834, 0.04416926632863713, 0.034965421441929267, 0.027692818954096862, 0.021943392063869062, 0.017395907829440702, 0.01379735569937688, 0.010948355091954763, 0.0086917072147943471, 0.0069034084075926859, 0.0054855917584077157]
+
+Legend:
+'True' indicates avoidance of shock and 'False' indicates event of getting shock.
+
+Process finished with exit code 0
+
+```
+
+#### Inference
+
+As we expect, the probability with which the dig gets a shock will decrease further, as he is too proactive. The probability has come down to 0.74568564602059784 for the first try.
