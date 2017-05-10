@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.stats as stats
-
+import scipy.optimize as optimize
+import math
 
 class Dogs:
     data = []
@@ -130,7 +131,7 @@ class Dogs:
 
     def predict(self):
 
-        num_success = 0  # number of success (avoidences) before trial j
+        num_success = 1  # number of success (avoidences) before trial j
         num_failure = 0  # number of previous failures (shocks)
         prediction = []
         prob_values = []
@@ -160,6 +161,69 @@ class Dogs:
         print "Probability values:"
         print prob_values
         print "\nLegend:\n'True' indicates avoidance of shock and 'False' indicates event of getting shock."
+
+
+
+
+
+
+
+    # Variational Inference
+
+    def generate_samples_for_vi(self, m, v):
+        while True:
+            val = stats.norm.rvs(loc=m, scale=math.sqrt(v))
+            if val < -0.00001:
+                return val
+
+    def prod_of_gaussian(self, m1, v1, m2, v2):
+        m = (v1**2 * m2 + v2**2 * m1) / (v1**2 + v2**2)
+        v = 1./((1./v1**2) + (1./v2**2))
+        return m, v
+
+    def kl_divergence(self, m1, v1, m2, v2):
+        kl = math.log(v2/v1) + (float(v1**2 + (m1 - m2)**2)/(2 * v2**2)) - (1./2)
+        return kl
+
+    def expectation_log_likelihood(self, m1, v1, m2, v2):
+        alpha = self.generate_samples_for_vi(m1, v1)
+        beta = self.generate_samples_for_vi(m2, v2)
+        log_likelihood = np.log(self.calculate_likelihood(alpha, beta))
+
+        prob_alpha = stats.norm.pdf(alpha, loc=m1, scale=math.sqrt(v1))
+        prob_beta = stats.norm.pdf(beta, loc=m2, scale=math.sqrt(v2))
+        prob = prob_alpha * prob_beta
+
+        return log_likelihood * prob
+
+    def prior(self):
+        m1, v1, m2, v2 = (0, 1, 0, 1)
+        return self.prod_of_gaussian(m1, v1, m2, v2)
+
+    def proposal(self, m1, v1, m2, v2):
+        return self.prod_of_gaussian(m1, v1, m2, v2)
+
+    def lower_bound(self, params):
+        m1, v1, m2, v2 = params
+        (m_proposal, v_proposal) = self.proposal(m1, v1, m2, v2)
+        (m_prior, v_prior) = self.prior()
+        lb = -self.kl_divergence(m_proposal, v_proposal, m_prior, v_prior) + self.expectation_log_likelihood(m1, v1, m2, v2)
+        return -lb
+
+    def find_optimal_vi_parameters(self, iteration=1):
+        # m1, v1, m2, v2 = (-.2446, .02451**2, -.07886, 0.0118**2)
+        # m1, v1, m2, v2 = (-.01, .02451, -.01, 0.0118)
+        m1, v1, m2, v2 = (0, 1, 0, 1)
+        for i in range(0, iteration):
+            result = optimize.minimize(fun=self.lower_bound, x0=[m1, v1, m2, v2], method='BFGS')
+            m1, v1, m2, v2 = result["x"]
+            print result["x"]
+
+    def fun(self, c):
+        print c
+        print type(c)
+        return c[0] ** 3
+
 
 
 data = (0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -197,5 +261,5 @@ n_trial = 25
 data = np.array(data).reshape(n_dogs, n_trial)
 
 d = Dogs(data)
-d.mcmc_sampler(-1, -1, 10000)
-d.predict()
+
+d.find_optimal_vi_parameters()
